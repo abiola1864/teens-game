@@ -1,0 +1,266 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Find Your Career Path! 🌟</title>
+    <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+    <!-- Points Display -->
+    <div class="points-bar">
+        <div class="points-display">
+            ⭐ Points: <span id="points-value">0</span>
+        </div>
+    </div>
+
+    <!-- Level Tracker -->
+    <div class="level-tracker">
+        <div class="level-badge" id="current-level-badge">LEVEL 1</div>
+        <div class="level-dots" id="level-dots">
+            <div class="level-dot current"></div>
+            <div class="level-dot"></div>
+            <div class="level-dot"></div>
+            <div class="level-dot"></div>
+            <div class="level-dot"></div>
+        </div>
+    </div>
+
+    <div class="game-container" id="game-container">
+        <!-- AGE SELECTION SCREEN -->
+        <div class="screen active" id="age-screen">
+            <h1>🌟 Find Your Career Path! 🌟</h1>
+            <p style="text-align: center; font-size: 1.2em; color: #666; margin-bottom: 30px;">
+                A Fun Career Discovery Game for Nigerian Youth
+            </p>
+            
+            <div style="text-align: center; margin: 30px 0;">
+                <p style="font-size: 1.3em; color: #333; font-weight: bold;">
+                    How old are you?
+                </p>
+            </div>
+
+            <div class="age-options">
+                <div class="age-card" onclick="GameController.selectAge('11-14')">
+                    <h3>11-14 years</h3>
+                    <p>Junior Secondary</p>
+                    <div style="font-size: 3em; margin: 10px 0;">🎒</div>
+                </div>
+                <div class="age-card" onclick="GameController.selectAge('15-16')">
+                    <h3>15-16 years</h3>
+                    <p>Senior Secondary (SS1-SS2)</p>
+                    <div style="font-size: 3em; margin: 10px 0;">📚</div>
+                </div>
+                <div class="age-card" onclick="GameController.selectAge('17-19')">
+                    <h3>17-19 years</h3>
+                    <p>SS3 / Post-Secondary</p>
+                    <div style="font-size: 3em; margin: 10px 0;">🎓</div>
+                </div>
+            </div>
+        </div>
+
+        <!-- LEVEL 1 INTRO -->
+        <div class="screen" id="level1-intro">
+            <div class="level-intro">
+                <div class="level-badge-large">1️⃣</div>
+                <h2>LEVEL 1: Discover Who You Are! 🎯</h2>
+                <p style="font-size: 1.2em; color: #666; margin: 20px 0;">
+                    Let's learn about your personality, skills, and interests!
+                </p>
+                <div style="background: #f8f9fa; padding: 20px; border-radius: 15px; margin: 30px 0;">
+                    <h3 style="color: #667eea; margin-bottom: 15px;">What You'll Do:</h3>
+                    <ul style="text-align: left; font-size: 1.1em; line-height: 2;">
+                        <li>✨ Answer 50 fun questions</li>
+                        <li>🎲 Play mini-games to earn bonus points</li>
+                        <li>🔓 Unlock your top career matches</li>
+                        <li>⭐ Each question = 10 points!</li>
+                    </ul>
+                </div>
+                <button class="btn btn-primary" onclick="GameController.startLevel(1)" style="font-size: 1.3em; padding: 20px 50px;">
+                    Let's Go! 🚀
+                </button>
+            </div>
+        </div>
+
+        <!-- QUESTION SCREEN -->
+        <div class="screen" id="question-screen">
+            <!-- Progress Bar -->
+            <div class="progress-bar">
+                <div class="progress-fill" id="progress-fill" style="width: 0%"></div>
+            </div>
+
+            <div class="question-header">
+                <div class="question-number" id="question-number">Question 1 of 50</div>
+                <div class="section-title" id="section-title">PART 1: WHAT DRIVES YOU?</div>
+                <h2 class="question-text" id="question-text"></h2>
+            </div>
+
+            <!-- Mini-Games Container -->
+            <div id="minigame-container"></div>
+
+            <!-- Options -->
+            <div class="options-container" id="options-container"></div>
+
+            <!-- Navigation -->
+            <div class="navigation-buttons">
+                <button class="btn btn-secondary" id="prev-btn" onclick="GameController.previousQuestion()" disabled>
+                    ← Previous
+                </button>
+                <button class="btn btn-primary" id="next-btn" onclick="GameController.nextQuestion()" disabled>
+                    Next →
+                </button>
+            </div>
+        </div>
+
+        <!-- SECTION UNLOCK SCREEN -->
+        <div class="screen" id="section-unlock-screen">
+            <div class="unlock-challenge">
+                <h3>🎉 Section Complete! 🎉</h3>
+                <p id="section-complete-message" style="font-size: 1.2em; margin: 20px 0;"></p>
+                <div class="mystery-box" onclick="GameController.continueToNextSection()">
+                    🎁
+                </div>
+                <p style="font-size: 1.1em;">Click to continue!</p>
+            </div>
+        </div>
+
+        <!-- LEVEL COMPLETE / UNLOCK RESULTS -->
+        <div class="screen" id="unlock-screen">
+            <div class="unlock-challenge">
+                <h3>🎉 Level 1 Complete! 🎉</h3>
+                <p style="font-size: 1.2em; margin: 20px 0;">
+                    You earned <span id="total-points-earned" style="font-size: 1.5em; font-weight: bold;">0</span> points!
+                </p>
+                <div class="mystery-box" onclick="GameController.unlockResults()">
+                    🎁
+                </div>
+                <p style="font-size: 1.1em;">Click the gift to reveal your career matches!</p>
+            </div>
+        </div>
+
+        <!-- RESULTS SCREEN (GAMIFIED UNLOCKING) -->
+        <div class="screen" id="results-screen">
+            <h1 style="text-align: center; color: #667eea; margin-bottom: 30px;">
+                Your Career Matches! 🎯
+            </h1>
+            
+            <div class="results-unlock">
+                <!-- Unlocking Instructions -->
+                <div id="unlock-instructions" style="text-align: center; background: #f8f9fa; padding: 20px; border-radius: 15px; margin-bottom: 30px;">
+                    <h3 style="color: #667eea;">🔓 Unlock Your Top Careers!</h3>
+                    <p style="margin: 15px 0;">Complete mini-challenges to reveal each career match</p>
+                </div>
+
+                <!-- Career Slots -->
+                <div id="career-results"></div>
+                
+                <div style="margin-top: 40px; text-align: center;">
+                    <button class="btn btn-primary" id="level2-btn" onclick="GameController.proceedToLevel2()" style="font-size: 1.3em; padding: 20px 50px; display: none;">
+                        Continue to Level 2 🔥
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <!-- LEVEL 2 INTRO -->
+        <div class="screen" id="level2-intro">
+            <div class="level-intro">
+                <div class="level-badge-large">2️⃣</div>
+                <h2>LEVEL 2: Academic Performance 📚</h2>
+                <p style="font-size: 1.2em; color: #666; margin: 20px 0;">
+                    Let's understand your academic strengths!
+                </p>
+                <div style="background: #f8f9fa; padding: 20px; border-radius: 15px; margin: 30px 0;">
+                    <h3 style="color: #667eea; margin-bottom: 15px;">What You'll Share:</h3>
+                    <ul style="text-align: left; font-size: 1.1em; line-height: 2;">
+                        <li>📝 Your WAEC/NECO results (if taken)</li>
+                        <li>📊 Your best subjects</li>
+                        <li>🎯 Your study habits</li>
+                        <li>💡 Your learning style</li>
+                    </ul>
+                </div>
+                <button class="btn btn-primary" onclick="GameController.startLevel(2)" style="font-size: 1.3em; padding: 20px 50px;">
+                    Continue! 📚
+                </button>
+            </div>
+        </div>
+
+        <!-- LEVEL 3 INTRO -->
+        <div class="screen" id="level3-intro">
+            <div class="level-intro">
+                <div class="level-badge-large">3️⃣</div>
+                <h2>LEVEL 3: Future Plans 🎓</h2>
+                <p style="font-size: 1.2em; color: #666; margin: 20px 0;">
+                    Tell us about your education goals!
+                </p>
+                <button class="btn btn-primary" onclick="GameController.startLevel(3)" style="font-size: 1.3em; padding: 20px 50px;">
+                    Continue! 🎓
+                </button>
+            </div>
+        </div>
+
+        <!-- LEVEL 4 INTRO -->
+        <div class="screen" id="level4-intro">
+            <div class="level-intro">
+                <div class="level-badge-large">4️⃣</div>
+                <h2>LEVEL 4: Your Support System 🤝</h2>
+                <p style="font-size: 1.2em; color: #666; margin: 20px 0;">
+                    Understanding what resources you have access to
+                </p>
+                <button class="btn btn-primary" onclick="GameController.startLevel(4)" style="font-size: 1.3em; padding: 20px 50px;">
+                    Continue! 🤝
+                </button>
+            </div>
+        </div>
+
+        <!-- LEVEL 5 INTRO -->
+        <div class="screen" id="level5-intro">
+            <div class="level-intro">
+                <div class="level-badge-large">5️⃣</div>
+                <h2>LEVEL 5: Final Assessment 🏆</h2>
+                <p style="font-size: 1.2em; color: #666; margin: 20px 0;">
+                    Last few questions to perfect your matches!
+                </p>
+                <button class="btn btn-primary" onclick="GameController.startLevel(5)" style="font-size: 1.3em; padding: 20px 50px;">
+                    Final Level! 🏆
+                </button>
+            </div>
+        </div>
+
+        <!-- FINAL RESULTS SCREEN -->
+        <div class="screen" id="final-results-screen">
+            <h1 style="text-align: center; color: #667eea; margin-bottom: 20px;">
+                🎉 Your Complete Career Profile! 🎉
+            </h1>
+            <div style="text-align: center; margin-bottom: 30px;">
+                <div style="display: inline-block; background: linear-gradient(135deg, #ffa500 0%, #ff6b6b 100%); color: white; padding: 20px 40px; border-radius: 15px; font-size: 1.5em; font-weight: bold;">
+                    Total Score: <span id="final-total-points">0</span> Points! ⭐
+                </div>
+            </div>
+            
+            <div id="final-career-matches"></div>
+            
+            <div style="margin-top: 40px; text-align: center; display: flex; gap: 15px; justify-content: center; flex-wrap: wrap;">
+                <button class="btn btn-primary" onclick="GameController.downloadResults()">
+                    📥 Download Results
+                </button>
+                <button class="btn btn-secondary" onclick="GameController.restartGame()">
+                    🔄 Start Over
+                </button>
+                <button class="btn btn-secondary" onclick="GameController.shareResults()">
+                    📤 Share Results
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Load Scripts -->
+    <script src="js/config.js"></script>
+    <script src="js/questions.js"></script>
+    <script src="js/capacity.js"></script>
+    <script src="js/careers.js"></script>
+    <script src="js/algorithm.js"></script>
+    <script src="js/minigames.js"></script>
+    <script src="js/game.js"></script>
+</body>
+</html>
