@@ -41,21 +41,28 @@
             </div>
 
             <div class="age-options">
-                <div class="age-card" onclick="GameController.selectAge('11-14')">
+                <div class="age-card" data-age="11-14">
                     <h3>11-14 years</h3>
                     <p>Junior Secondary</p>
                     <div style="font-size: 3em; margin: 10px 0;">🎒</div>
                 </div>
-                <div class="age-card" onclick="GameController.selectAge('15-16')">
+                <div class="age-card" data-age="15-16">
                     <h3>15-16 years</h3>
                     <p>Senior Secondary (SS1-SS2)</p>
                     <div style="font-size: 3em; margin: 10px 0;">📚</div>
                 </div>
-                <div class="age-card" onclick="GameController.selectAge('17-19')">
+                <div class="age-card" data-age="17-19">
                     <h3>17-19 years</h3>
                     <p>SS3 / Post-Secondary</p>
                     <div style="font-size: 3em; margin: 10px 0;">🎓</div>
                 </div>
+            </div>
+            
+            <!-- Clear Progress Button -->
+            <div style="text-align: center; margin-top: 40px;">
+                <button class="btn btn-secondary" id="clear-progress-btn" style="display: none;">
+                    🗑️ Clear Saved Progress
+                </button>
             </div>
         </div>
 
@@ -76,7 +83,7 @@
                         <li>⭐ Each question = 10 points!</li>
                     </ul>
                 </div>
-                <button class="btn btn-primary" onclick="GameController.startLevel(1)" style="font-size: 1.3em; padding: 20px 50px;">
+                <button class="btn btn-primary" id="start-level1-btn" style="font-size: 1.3em; padding: 20px 50px;">
                     Let's Go! 🚀
                 </button>
             </div>
@@ -103,10 +110,10 @@
 
             <!-- Navigation -->
             <div class="navigation-buttons">
-                <button class="btn btn-secondary" id="prev-btn" onclick="GameController.previousQuestion()" disabled>
+                <button class="btn btn-secondary" id="prev-btn" disabled>
                     ← Previous
                 </button>
-                <button class="btn btn-primary" id="next-btn" onclick="GameController.nextQuestion()" disabled>
+                <button class="btn btn-primary" id="next-btn" disabled>
                     Next →
                 </button>
             </div>
@@ -117,7 +124,7 @@
             <div class="unlock-challenge">
                 <h3>🎉 Section Complete! 🎉</h3>
                 <p id="section-complete-message" style="font-size: 1.2em; margin: 20px 0;"></p>
-                <div class="mystery-box" onclick="GameController.continueToNextSection()">
+                <div class="mystery-box" id="section-continue-btn">
                     🎁
                 </div>
                 <p style="font-size: 1.1em;">Click to continue!</p>
@@ -131,7 +138,7 @@
                 <p style="font-size: 1.2em; margin: 20px 0;">
                     You earned <span id="total-points-earned" style="font-size: 1.5em; font-weight: bold;">0</span> points!
                 </p>
-                <div class="mystery-box" onclick="GameController.unlockResults()">
+                <div class="mystery-box" id="unlock-mystery-box">
                     🎁
                 </div>
                 <p style="font-size: 1.1em;">Click the gift to reveal your career matches!</p>
@@ -155,7 +162,7 @@
                 <div id="career-results"></div>
                 
                 <div style="margin-top: 40px; text-align: center;">
-                    <button class="btn btn-primary" id="level2-btn" onclick="GameController.proceedToLevel2()" style="font-size: 1.3em; padding: 20px 50px; display: none;">
+                    <button class="btn btn-primary" id="level2-btn" style="font-size: 1.3em; padding: 20px 50px; display: none;">
                         Continue to Level 2 🔥
                     </button>
                 </div>
@@ -179,7 +186,7 @@
                         <li>💡 Your learning style</li>
                     </ul>
                 </div>
-                <button class="btn btn-primary" onclick="GameController.startLevel(2)" style="font-size: 1.3em; padding: 20px 50px;">
+                <button class="btn btn-primary" id="start-level2-btn" style="font-size: 1.3em; padding: 20px 50px;">
                     Continue! 📚
                 </button>
             </div>
@@ -193,7 +200,7 @@
                 <p style="font-size: 1.2em; color: #666; margin: 20px 0;">
                     Tell us about your education goals!
                 </p>
-                <button class="btn btn-primary" onclick="GameController.startLevel(3)" style="font-size: 1.3em; padding: 20px 50px;">
+                <button class="btn btn-primary" id="start-level3-btn" style="font-size: 1.3em; padding: 20px 50px;">
                     Continue! 🎓
                 </button>
             </div>
@@ -207,7 +214,7 @@
                 <p style="font-size: 1.2em; color: #666; margin: 20px 0;">
                     Understanding what resources you have access to
                 </p>
-                <button class="btn btn-primary" onclick="GameController.startLevel(4)" style="font-size: 1.3em; padding: 20px 50px;">
+                <button class="btn btn-primary" id="start-level4-btn" style="font-size: 1.3em; padding: 20px 50px;">
                     Continue! 🤝
                 </button>
             </div>
@@ -221,7 +228,7 @@
                 <p style="font-size: 1.2em; color: #666; margin: 20px 0;">
                     Last few questions to perfect your matches!
                 </p>
-                <button class="btn btn-primary" onclick="GameController.startLevel(5)" style="font-size: 1.3em; padding: 20px 50px;">
+                <button class="btn btn-primary" id="start-level5-btn" style="font-size: 1.3em; padding: 20px 50px;">
                     Final Level! 🏆
                 </button>
             </div>
@@ -241,24 +248,24 @@
             <div id="final-career-matches"></div>
             
             <div style="margin-top: 40px; text-align: center; display: flex; gap: 15px; justify-content: center; flex-wrap: wrap;">
-                <button class="btn btn-primary" onclick="GameController.downloadResults()">
+                <button class="btn btn-primary" id="download-btn">
                     📥 Download Results
                 </button>
-                <button class="btn btn-secondary" onclick="GameController.restartGame()">
+                <button class="btn btn-secondary" id="restart-btn">
                     🔄 Start Over
                 </button>
-                <button class="btn btn-secondary" onclick="GameController.shareResults()">
+                <button class="btn btn-secondary" id="share-btn">
                     📤 Share Results
                 </button>
             </div>
         </div>
     </div>
 
-    <!-- Load Scripts -->
+    <!-- Load Scripts in correct order -->
     <script src="js/config.js"></script>
+    <script src="js/careers.js"></script>
     <script src="js/questions.js"></script>
     <script src="js/capacity.js"></script>
-    <script src="js/careers.js"></script>
     <script src="js/algorithm.js"></script>
     <script src="js/minigames.js"></script>
     <script src="js/game.js"></script>
